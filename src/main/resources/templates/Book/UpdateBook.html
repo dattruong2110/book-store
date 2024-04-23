@@ -12,7 +12,8 @@
 <body>
 <nav th:replace="~{/index :: navbar}"></nav>
 <div class="container">
-    <h1>Create Book</h1>
+    <h1>Update Book</h1>
+    <a class="btn btn-primary" th:href="@{/books}" style="margin: 0 0 10px;">Back</a>
     <form th:action="@{/books/update/{id}(id=${book.id})}" method="post" th:object="${book}">
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
