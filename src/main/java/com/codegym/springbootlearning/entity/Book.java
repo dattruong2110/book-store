@@ -1,10 +1,7 @@
 package com.codegym.springbootlearning.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -21,6 +18,7 @@ Entity phải có 1 constructor không tham số
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

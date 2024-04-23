@@ -1,5 +1,8 @@
 package com.codegym.springbootlearning.controller;
 
+import com.codegym.springbootlearning.converter.DtoToEntity;
+import com.codegym.springbootlearning.payload.request.EditBookRequest;
+import com.codegym.springbootlearning.payload.response.ResponseDto;
 import com.codegym.springbootlearning.entity.Book;
 import com.codegym.springbootlearning.service.IAuthorService;
 import com.codegym.springbootlearning.service.IBookService;
@@ -17,6 +20,7 @@ import java.util.UUID;
 @RequestMapping("/api/books")
 @AllArgsConstructor
 public class BookRestController {
+    private final DtoToEntity dtoToEntity;
     private final IBookService bookService;
     private final IAuthorService authorService;
 
@@ -27,8 +31,15 @@ public class BookRestController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Void> update(Book book) {
-        bookService.save(book);
+    public ResponseEntity<ResponseDto> update(@PathVariable UUID id, @RequestBody EditBookRequest bookRequest) {
+        Book book = bookService.findById(id);
+        Book bookUpdate = dtoToEntity.convert(book, bookRequest);
+        bookService.update(bookUpdate);
+        ResponseDto responseDto = ResponseDto.builder()
+                .message("Update success")
+                .data(bookUpdate)
+                .status(HttpStatus.OK)
+                .build();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

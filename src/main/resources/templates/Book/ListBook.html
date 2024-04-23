@@ -15,10 +15,11 @@
             integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
 </head>
 <body>
+<nav th:replace="~{/index :: navbar}"></nav>
 <div class="container">
     <h1>Book list</h1>
     <div class="input-group mb-3">
-        <a href="books/create">
+        <a th:href="@{/books/create}" >
             <button class="btn btn-primary">Create</button>
         </a>
         <div class="position-absolute top-0 end-0">
@@ -56,7 +57,11 @@
             </td>
             <td th:text="${book.price}"></td>
             <td>
-                <button class="btn btn-primary">Edit</button>
+                <a th:href="@{/books/update/{id}(id=${book.id})}" style="text-decoration: none;">
+                    <button class="btn btn-primary">
+                        Update
+                    </button>
+                </a>
 
                 <button class="btn btn-danger" th:data-id="${book.id}" th:data-name="${book.name}"
                         data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -73,28 +78,26 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Book</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="modal-body">
-                Are you sure you want to delete
-            </div>
+            <div class="modal-body" id="modal-body"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" id="deleteBook">Delete</button>
+                <button type="button" class="btn btn-danger" id="btnEvent"></button>
             </div>
         </div>
     </div>
 </div>
 <script>
     function deleteBook(id, name) {
-        console.log(id, name)
-        document.getElementById('deleteBook').setAttribute('data-id', id);
-        document.getElementById('deleteBook').setAttribute('data-name', name);
+        console.log(id, name);
+        document.getElementById('btnEvent').setAttribute('data-id', id);
+        document.getElementById('btnEvent').setAttribute('data-name', name);
         document.getElementById('exampleModalLabel').innerText = 'Delete ' + name;
-        console.log(id, name)
         document.getElementById('modal-body').innerText = 'Do you want to delete ' + name + '?';
-        document.querySelector("#deleteBook").addEventListener('click', function () {
+        document.getElementById("btnEvent").innerText = 'Delete';
+        document.querySelector("#btnEvent").addEventListener('click', function () {
             window.location.href = '/books/delete/' + id
         })
     }

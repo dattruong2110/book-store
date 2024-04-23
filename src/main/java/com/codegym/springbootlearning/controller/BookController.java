@@ -22,7 +22,7 @@ public class BookController {
 
     @GetMapping
     public ModelAndView showList(@RequestParam(defaultValue = "") String name,
-                                 @PageableDefault(size = 5, sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
+                                 @PageableDefault(size = 10, sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("Book/ListBook");
         modelAndView.addObject("books", bookService.findAll(name, pageable));
         modelAndView.addObject("authors", authorService.findAll(name, pageable));
@@ -59,8 +59,16 @@ public class BookController {
         return modelAndView;
     }
 
-    @PutMapping("/update/{id}")
-    public String edit(Book book) {
+    @GetMapping("/update/{id}")
+    public ModelAndView showUpdateForm(@PathVariable UUID id, Pageable pageable) {
+        ModelAndView modelAndView = new ModelAndView("Book/UpdateBook");
+        modelAndView.addObject("book", bookService.findById(id));
+        modelAndView.addObject("authors", authorService.findAll("", pageable));
+        return modelAndView;
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(Book book) {
         bookService.update(book);
         return "redirect:/books";
     }
